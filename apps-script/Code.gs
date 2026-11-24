@@ -39,26 +39,59 @@ function doGet() {
   return json_({ ok: true, service: 'Colonial pedidos DHL' });
 }
 
+/**
+ * Alternativa sin "Implementar": ejecutar una vez desde el editor.
+ * Crea un formulario de Google que recibe los pedidos del portal, lo deja abierto
+ * sin inicio de sesión y conecta el aviso automático. Al terminar muestra en el
+ * registro la dirección que se debe compartir con Claude.
+ */
+function crearFormulario() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  PropertiesService.getScriptProperties().setProperty('SPREADSHEET_ID', ss.getId());
+  hoja_();
+  const form = FormApp.create('Pedidos portal DHL (no editar)');
+  form.setDescription('Formulario técnico que recibe los pedidos del portal de compras. No lo edite ni lo comparta.');
+  try { form.setRequireLogin(false); } catch (err) { Logger.log('Aviso: no se pudo quitar el inicio de sesión: ' + err); }
+  form.setCollectEmail(false);
+  const item = form.addParagraphTextItem().setTitle('pedido');
+  ScriptApp.getProjectTriggers().filter(t => t.getHandlerFunction() === 'alRecibirFormulario').forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('alRecibirFormulario').forForm(form).onFormSubmit().create();
+  PropertiesService.getScriptProperties().setProperty('FORM_ID', form.getId());
+  const url = form.getPublishedUrl().replace(/\/viewform.*$/, '/formResponse');
+  Logger.log('COMPARTA ESTO CON CLAUDE:  ' + url + '  |  entry.' + item.getId());
+}
+
+/** Se ejecuta solo cada vez que llega un pedido por el formulario. */
+function alRecibirFormulario(e) {
+  const r = e.response.getItemResponses()[0];
+  const raw = r ? String(r.getResponse() || '') : '';
+  const res = procesarPedido_(raw);
+  if (!res.ok) console.warn('Pedido rechazado: ' + res.error);
+}
+
 function doPost(e) {
+  return json_(procesarPedido_((e && e.postData && e.postData.contents) || ''));
+}
+
+function procesarPedido_(raw) {
   try {
-    const raw = (e && e.postData && e.postData.contents) || '';
-    if (raw.length > 50000) return json_({ ok: false, error: 'too_large' });
+    if (raw.length > 50000) return { ok: false, error: 'too_large' };
     const d = JSON.parse(raw);
 
     // Trampa anti-spam: los humanos nunca llenan este campo.
-    if (d._gotcha) return json_({ ok: true, ref: d.referencia || '' });
+    if (d._gotcha) return { ok: true, ref: d.referencia || '' };
 
     const req = ['referencia', 'nombre', 'area', 'correo', 'telefono', 'proposito', 'fecha_entrega', 'lugar_entrega'];
-    for (const k of req) if (!String(d[k] || '').trim()) return json_({ ok: false, error: 'missing_' + k });
+    for (const k of req) if (!String(d[k] || '').trim()) return { ok: false, error: 'missing_' + k };
     const items = Array.isArray(d.items) ? d.items.slice(0, 200) : [];
     const custom = Array.isArray(d.custom) ? d.custom.slice(0, 50) : [];
-    if (!items.length && !custom.length) return json_({ ok: false, error: 'empty_order' });
+    if (!items.length && !custom.length) return { ok: false, error: 'empty_order' };
 
     // Límite simple: máximo 10 pedidos por correo cada 10 minutos.
     const cache = CacheService.getScriptCache();
     const key = 'n_' + String(d.correo).toLowerCase();
     const n = Number(cache.get(key) || 0);
-    if (n >= 10) return json_({ ok: false, error: 'rate_limited' });
+    if (n >= 10) return { ok: false, error: 'rate_limited' };
     cache.put(key, String(n + 1), 600);
 
     const s = v => String(v == null ? '' : v).slice(0, 500);
@@ -78,10 +111,10 @@ function doPost(e) {
 
     enviarAviso_(d, items, custom, subtotal, toQuote);
     enviarConfirmacion_(d, items, custom, subtotal, toQuote);
-    return json_({ ok: true, ref: s(d.referencia) });
+    return { ok: true, ref: s(d.referencia) };
   } catch (err) {
     console.error(err);
-    return json_({ ok: false, error: 'server_error' });
+    return { ok: false, error: 'server_error' };
   }
 }
 
