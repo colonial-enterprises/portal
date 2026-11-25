@@ -202,6 +202,51 @@ form .row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
 .done .ref{display:inline-block;margin:var(--s4) 0;padding:var(--s2) var(--s4);background:var(--tile);font-weight:700;letter-spacing:.04em}
 .done .actions{display:flex;flex-wrap:wrap;gap:var(--s3);justify-content:center;margin-top:var(--s6)}
 .empty-cart{color:var(--muted);font-size:14px;padding:var(--s2) 0 var(--s4)}
+/* ---------- Kits ---------- */
+.kits{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--s6)}
+.kit{background:var(--surface);border-top:2px solid var(--aqua);padding:var(--s6);display:flex;flex-direction:column;gap:var(--s3)}
+.kit h3{font-size:18px}
+.kit p{font-size:14px}
+.kit ul{list-style:none;margin:0;padding:0;flex:1}
+.kit li{display:grid;grid-template-columns:44px 1fr;gap:var(--s3);align-items:center;padding:var(--s2) 0;border-bottom:1px solid var(--line-soft);font-size:13px;line-height:1.3}
+.kit li .thumb{width:44px;height:44px;aspect-ratio:1}
+.kit li .thumb img{padding:2px}
+.kit li .thumb.fallback svg{width:60%;height:60%}
+.kit .total{font-size:14px;color:var(--muted)}
+.kit .total strong{font-size:18px;color:var(--text)}
+/* ---------- Ficha de producto ---------- */
+.card .open{border:0;background:transparent;padding:0;text-align:left;cursor:pointer;display:block;width:100%;color:inherit}
+.card .open:hover h3{text-decoration:underline;text-underline-offset:3px}
+dialog.detail{border:0;border-top:2px solid var(--aqua);padding:0;width:min(860px,calc(100% - 32px));max-height:calc(100vh - 32px);background:var(--surface);color:var(--text)}
+dialog.detail::backdrop{background:rgba(15,21,38,.55)}
+.detail-head{display:flex;justify-content:space-between;align-items:center;padding:var(--s3) var(--s6);border-bottom:1px solid var(--line-soft)}
+.detail-body{display:grid;grid-template-columns:1fr 1fr;gap:var(--s8);padding:var(--s6)}
+.detail-img .thumb{aspect-ratio:1}
+.detail-info{display:flex;flex-direction:column;gap:var(--s4)}
+.detail-info h2{font-size:24px}
+.detail-info .price{font-size:14px;padding-top:var(--s3);border-top:1px solid var(--line-soft)}
+.detail-info .price strong{font-size:24px}
+.detail-info .price span{color:var(--muted)}
+.detail-info .quote{font-size:18px;font-weight:700;color:var(--muted)}
+.detail-related{padding:0 var(--s6) var(--s6)}
+.related{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3);margin-top:var(--s3)}
+.related button{border:1px solid var(--line-soft);background:var(--surface);padding:var(--s2);display:grid;grid-template-columns:48px 1fr;gap:var(--s2);align-items:center;text-align:left;cursor:pointer;font-size:12px;line-height:1.3;color:var(--text)}
+.related .thumb{width:48px;height:48px;aspect-ratio:1}
+.related .thumb.fallback svg{width:60%;height:60%}
+/* ---------- Sugerencias y barra móvil ---------- */
+.suggest{display:flex;flex-wrap:wrap;gap:var(--s2);justify-content:center;align-items:center;margin-top:var(--s4)}
+.suggest button{border:1px solid var(--line);background:transparent;border-radius:var(--radius-control);padding:var(--s2) var(--s3);font-size:14px;cursor:pointer;min-height:40px;color:var(--text)}
+.mbar{display:none}
+@media (max-width:900px){
+  .mbar:not([hidden]){display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:2px solid var(--aqua);padding:var(--s3) var(--s4);align-items:center;justify-content:space-between;gap:var(--s3)}
+  .mbar strong{display:block;font-size:14px}
+  .mbar span{font-size:13px;color:var(--muted)}
+  body.has-mbar{padding-bottom:72px}
+  body.has-mbar .toast{bottom:88px}
+  .detail-body{grid-template-columns:1fr;gap:var(--s4)}
+  .detail-img .thumb{aspect-ratio:4/3}
+  .related{grid-template-columns:1fr}
+}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--btn-bg);color:var(--btn-text);padding:var(--s3) var(--s6);font-size:14px;font-weight:700;z-index:60;border-radius:var(--radius-control)}
 
 /* ---------- Print sheet ---------- */
@@ -288,6 +333,7 @@ form .row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
     </a>
     <nav class="main">
       <a href="#frecuentes" data-i18n="nav.popular">Lo más pedido</a>
+      <a href="#kits" data-i18n="nav.kits">Kits</a>
       <a href="#catalogo" data-i18n="nav.catalog">Catálogo</a>
       <a href="#proceso" data-i18n="nav.process">Cómo funciona</a>
     </nav>
@@ -335,6 +381,19 @@ form .row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
     </div>
   </section>
 
+  <section class="block" id="kits">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow" data-i18n="kits.eyebrow">Kits listos</span>
+          <h2 data-i18n="kits.title">Todo lo necesario, en un solo paso</h2>
+        </div>
+        <p class="note" data-i18n="kits.note">Agregue el kit y ajuste cantidades en su pedido. Puede quitar lo que no necesite.</p>
+      </div>
+      <div class="kits" id="kitList"></div>
+    </div>
+  </section>
+
   <section class="block" id="catalogo">
     <div class="wrap">
       <div class="section-head">
@@ -355,7 +414,10 @@ form .row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
       <p class="result-count" id="resultCount" aria-live="polite"></p>
       <div class="grid" id="grid"></div>
       <div class="more" id="moreWrap" hidden><button class="btn secondary" type="button" id="moreBtn"></button></div>
-      <p class="empty" id="empty" hidden data-i18n="cat.empty">No encontramos resultados. Agréguelo como solicitud especial y lo conseguimos.</p>
+      <div class="empty" id="empty" hidden>
+        <p data-i18n="cat.empty">No encontramos resultados. Agréguelo como solicitud especial y lo conseguimos.</p>
+        <div class="suggest" id="suggest"></div>
+      </div>
 
       <div class="special">
         <div>
@@ -482,6 +544,34 @@ form .row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
 <div id="printSheet" aria-hidden="true"></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
+<dialog class="detail" id="detail" aria-labelledby="detailTitle">
+  <div class="detail-head">
+    <span class="eyebrow" id="detailCat"></span>
+    <button class="icon-btn" type="button" id="detailClose" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="detail-body">
+    <div class="detail-img" id="detailImg"></div>
+    <div class="detail-info">
+      <h2 id="detailTitle"></h2>
+      <p id="detailDesc"></p>
+      <div class="price" id="detailPrice"></div>
+      <div id="detailCtl"></div>
+      <p class="fine" data-i18n="detail.note">Imagen de referencia. Si necesita otra variante, indíquelo en comentarios.</p>
+    </div>
+  </div>
+  <div class="detail-related" id="detailRelatedWrap">
+    <span class="eyebrow" data-i18n="detail.related">También pide su equipo</span>
+    <div class="related" id="detailRelated"></div>
+  </div>
+</dialog>
+
+<div class="mbar" id="mbar" hidden>
+  <div><strong id="mbarCount"></strong><span id="mbarTotal"></span></div>
+  <button class="btn small" type="button" id="mbarBtn" data-i18n="mbar.cta">Ver pedido</button>
+</div>
+
 <script src="data.js"></script>
 <script>
 /* =====================================================================
@@ -544,7 +634,11 @@ const EN = {
   "form.date":"Desired delivery date","form.place":"Delivery location","form.cc":"Cost center","form.po":"PO number, if it already exists","form.optional":"(optional)",
   "form.notes":"Comments","form.submit":"Send order","form.error":"Complete the highlighted fields and add at least one product or special request.",
   "form.fine":"We reply in under 12 business hours with the formal proposal.",
-  "done.title":"We received your order","done.text":"We will send the formal proposal in under 12 business hours. Your reference number is:","done.print":"Print or save PDF","done.again":"New order"
+  "done.title":"We received your order","done.text":"We will send the formal proposal in under 12 business hours. Your reference number is:","done.print":"Print or save PDF","done.again":"New order",
+  "nav.kits":"Kits","kits.eyebrow":"Ready-made kits","kits.title":"Everything you need, in one step",
+  "kits.note":"Add the kit and adjust quantities in your order. You can remove anything you do not need.",
+  "detail.note":"Reference image. If you need another variant, mention it in the comments.","detail.related":"Your team also orders",
+  "mbar.cta":"View order"
 };
 const UI = {
   es:{ all:"Todos", add:"Agregar", from:"", quote:"A cotizar", remove:"Quitar", qty:"Cantidad", search:"Buscar: audífonos, tinta, catering…", close:"Cerrar",
@@ -552,13 +646,17 @@ const UI = {
        estNote:(q)=> q ? `Antes de ITBMS. No incluye ${q} ítem(s) a cotizar.` : "Antes de ITBMS. Precio final en la propuesta.",
        sendErr:"No pudimos enviar el pedido. Intente de nuevo en unos minutos o escríbanos a m.morgan@colonialenterprise.com.",
        printTitle:"Solicitud de pedido", printFor:"Para", printRef:"Referencia", printDate:"Fecha", item:"Descripción", unitP:"Precio ref.", total:"Total ref.",
-       printNote:"Precios de referencia en US$ antes de ITBMS. La propuesta formal de Colonial confirma precios y disponibilidad." },
+       printNote:"Precios de referencia en US$ antes de ITBMS. La propuesta formal de Colonial confirma precios y disponibilidad.",
+       addKit:"Agregar kit", kitAdded:"Agregamos el kit a su pedido", kitTotal:"Desde", kitPlus:(n)=>` + ${n} a cotizar`, items:(n)=> n===1?"1 ítem":`${n} ítems`,
+       trySug:"Pruebe con:" },
   en:{ all:"All", add:"Add", from:"", quote:"Quote on request", remove:"Remove", qty:"Quantity", search:"Search: headsets, ink, catering…", close:"Close",
        more:"Show more", count:(n,t)=>`Showing ${n} of ${t}`, added:"Added to your order", repeated:"We added your last order", special:"Special request",
        estNote:(q)=> q ? `Before ITBMS tax. Excludes ${q} item(s) to be quoted.` : "Before ITBMS tax. Final price in the proposal.",
        sendErr:"We could not send your order. Please try again in a few minutes or email m.morgan@colonialenterprise.com.",
        printTitle:"Order request", printFor:"For", printRef:"Reference", printDate:"Date", item:"Description", unitP:"Ref. price", total:"Ref. total",
-       printNote:"Reference prices in US$ before ITBMS tax. Colonial's formal proposal confirms prices and availability." }
+       printNote:"Reference prices in US$ before ITBMS tax. Colonial's formal proposal confirms prices and availability.",
+       addKit:"Add kit", kitAdded:"We added the kit to your order", kitTotal:"From", kitPlus:(n)=>` + ${n} to quote`, items:(n)=> n===1?"1 item":`${n} items`,
+       trySug:"Try:" }
 };
 const FIELD_LABELS = {nombre:"Nombre",area:"Área",correo:"Correo",telefono:"Teléfono",proposito:"Propósito",fecha_entrega:"Fecha deseada",lugar_entrega:"Lugar de entrega",centro_costo:"Centro de costo",po:"PO",comentarios:"Comentarios"};
 
@@ -574,7 +672,33 @@ const store = {
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 let lang = store.get("dhl.lang", "es");
-let CATALOG = [], POPULAR = [], byId = () => null;
+let CATALOG = [], POPULAR = [], KITS = [], byId = () => null;
+/* Sinónimos del buscador: si una palabra buscada pertenece a un grupo, se acepta cualquiera del grupo. */
+const SYNONYMS = [
+  ["audifono","audifonos","auricular","auriculares","headset","headsets","diadema","diademas","jabra","yealink","headphone","headphones"],
+  ["teclado","teclados","keyboard","combo"],
+  ["mouse","raton","mice"],
+  ["cargador","cargadores","adaptador","charger","adapter","fuente"],
+  ["tinta","tintas","cartucho","cartuchos","toner","ink","impresora","printer"],
+  ["ups","respaldo","bateria","baterias","battery","energia","power"],
+  ["silla","sillas","chair","chairs","asiento"],
+  ["mesa","mesas","table","escritorio","desk"],
+  ["hielo","ice","hielera","maquina"],
+  ["catering","comida","comidas","almuerzo","alimentos","food","desayuno","refrigerio","brindis"],
+  ["arbitro","arbitros","referee","referees","arbitraje","liga","ligas","torneo"],
+  ["uniforme","uniformes","camiseta","camisetas","jersey","ropa"],
+  ["mochila","mochilas","backpack","bulto","maletin","salveque"],
+  ["camara","webcam","video","videollamada","reunion","reuniones","meeting","zoom","teams"],
+  ["presentador","puntero","laser","presenter","pointer"],
+  ["persiana","persianas","cortina","cortinas","blind","blinds"],
+  ["limpieza","limpiar","alcohol","cleaning","aire"],
+  ["evento","eventos","event","fiesta","celebracion","decoracion"],
+  ["cable","cables","usb","hdmi"],
+  ["licencia","licencias","software","adobe","canva","suscripcion"],
+  ["mantenimiento","maintenance","reparacion","servicio","tecnico","inspeccion"]
+];
+const SYN_INDEX = new Map(); SYNONYMS.forEach(g => g.forEach(w => SYN_INDEX.set(w, g)));
+const SUGGESTIONS = { es:["Audífonos","Teclado","Tinta","Catering","Árbitros","Hielo"], en:["Headset","Keyboard","Ink","Catering","Referees","Ice"] };
 let cart = store.get("dhl.cart", {});        // { id: qty }
 let custom = store.get("dhl.custom", []);    // [{text, qty}]
 let activeCat = "all", query = "", shown = CONFIG.pageSize;
@@ -622,6 +746,9 @@ function start(data){
   const map = new Map(CATALOG.map(p => [p.id, p]));
   byId = id => map.get(id);
   POPULAR = (data.popular || []).map(byId).filter(Boolean);
+  KITS = (data.kits || []).map(k => ({ ...k, items: k.items.filter(([id]) => byId(id)) })).filter(k => k.items.length);
+  $("#kits").hidden = !KITS.length;
+  CATALOG.forEach(p => p.haystack = norm(`${p.es.name} ${p.es.desc} ${p.en.name} ${p.en.desc} ${CATEGORIES[p.cat].es} ${CATEGORIES[p.cat].en}`));
   Object.keys(cart).forEach(id => { if (!byId(id)) delete cart[id]; });
   $("#gate").hidden = true; $("#app").hidden = false;
   document.title = "Colonial · Compras DHL";
@@ -658,7 +785,7 @@ function bindControls(root){
 }
 function setQty(id, q){
   if (q <= 0) delete cart[id]; else cart[id] = Math.min(q, 9999);
-  save(); renderGrid(); renderPopular(); renderCart();
+  save(); renderGrid(); renderPopular(); renderCart(); refreshDetail();
 }
 function save(){ store.set("dhl.cart", cart); store.set("dhl.custom", custom); }
 
@@ -674,7 +801,8 @@ function applyLang(){
   $("#search").placeholder = UI[lang].search;
   $("#closeCart").setAttribute("aria-label", UI[lang].close);
   $("#repeatBtn").hidden = !store.get("dhl.last", null);
-  renderTabs(); renderGrid(); renderPopular(); renderCart();
+  $("#detailClose").setAttribute("aria-label", UI[lang].close);
+  renderTabs(); renderGrid(); renderPopular(); renderKits(); renderCart(); refreshDetail();
 }
 document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => { lang = b.dataset.lang; store.set("dhl.lang", lang); applyLang(); }));
 
@@ -687,11 +815,64 @@ function renderPopular(){
   bindControls($("#popular"));
 }
 
+/* ---------- Kits ---------- */
+function renderKits(){
+  $("#kitList").innerHTML = KITS.map(k => {
+    const parts = k.items.map(([id,q]) => ({ p:byId(id), q }));
+    const priced = parts.filter(x => x.p.price != null);
+    const total = priced.reduce((s,x) => s + x.p.price * x.q, 0);
+    const toQuote = parts.length - priced.length;
+    return `<article class="kit">
+      <span class="eyebrow">${CATEGORIES[k.cat] ? CATEGORIES[k.cat][lang] : ""}</span>
+      <h3>${esc(k[lang].name)}</h3>
+      <p>${esc(k[lang].desc)}</p>
+      <ul>${parts.map(({p,q}) => `<li>${thumb(p, true)}<span>${q} × ${esc(p[lang].name)}</span></li>`).join("")}</ul>
+      <div class="total">${priced.length ? `${UI[lang].kitTotal} <strong>${money(total)}</strong>` : ""}${toQuote ? UI[lang].kitPlus(toQuote) : ""}</div>
+      <button class="btn" type="button" data-kit="${esc(k.id)}">${UI[lang].addKit}</button>
+    </article>`;
+  }).join("");
+  $("#kitList").querySelectorAll("[data-kit]").forEach(b => b.addEventListener("click", () => {
+    const k = KITS.find(x => x.id === b.dataset.kit); if (!k) return;
+    k.items.forEach(([id,q]) => { cart[id] = Math.min((cart[id] || 0) + q, 9999); });
+    save(); renderGrid(); renderPopular(); renderCart(); toast(UI[lang].kitAdded);
+  }));
+}
+
+/* ---------- Ficha de producto ---------- */
+let detailId = null;
+function openDetail(id){
+  detailId = id; refreshDetail();
+  const d = $("#detail"); if (!d.open) d.showModal();
+}
+function refreshDetail(){
+  const d = $("#detail"); if (!detailId || !d.open && !detailId) return;
+  const p = byId(detailId); if (!p) return;
+  $("#detailCat").textContent = CATEGORIES[p.cat][lang];
+  $("#detailTitle").textContent = p[lang].name;
+  $("#detailDesc").textContent = p[lang].desc;
+  $("#detailPrice").innerHTML = priceHTML(p);
+  if ($("#detailImg").dataset.id !== p.id) { $("#detailImg").innerHTML = thumb(p); $("#detailImg").dataset.id = p.id; }
+  $("#detailCtl").innerHTML = control(p); bindControls($("#detailCtl"));
+  const rel = (POPULAR.filter(x => x.cat === p.cat && x.id !== p.id).concat(CATALOG.filter(x => x.cat === p.cat && x.id !== p.id))).filter((x,i,a) => a.indexOf(x) === i).slice(0,3);
+  $("#detailRelatedWrap").hidden = !rel.length;
+  $("#detailRelated").innerHTML = rel.map(x => `<button type="button" data-detail="${x.id}">${thumb(x, true)}<span>${esc(x[lang].name)}</span></button>`).join("");
+  $("#detailRelated").querySelectorAll("[data-detail]").forEach(b => b.addEventListener("click", () => openDetail(b.dataset.detail)));
+}
+$("#detailClose").addEventListener("click", () => $("#detail").close());
+$("#detail").addEventListener("click", e => { if (e.target === $("#detail")) $("#detail").close(); });
+$("#detail").addEventListener("close", () => { detailId = null; $("#detailImg").dataset.id = ""; });
+
 /* ---------- Catálogo ---------- */
+function matches(p, words){
+  return words.every(w => {
+    if (p.haystack.includes(w)) return true;
+    const g = SYN_INDEX.get(w) || [...SYN_INDEX.keys()].filter(k => w.length >= 3 && k.startsWith(w)).map(k => SYN_INDEX.get(k))[0];
+    return !!g && g.some(s => p.haystack.includes(s));
+  });
+}
 function visible(){
-  const q = norm(query.trim());
-  return CATALOG.filter(p => (activeCat === "all" || p.cat === activeCat) &&
-    (!q || norm(`${p.es.name} ${p.es.desc} ${p.en.name} ${p.en.desc} ${CATEGORIES[p.cat].es} ${CATEGORIES[p.cat].en}`).includes(q)));
+  const words = norm(query.trim()).split(/\s+/).filter(w => w.length > 1);
+  return CATALOG.filter(p => (activeCat === "all" || p.cat === activeCat) && (!words.length || matches(p, words)));
 }
 function renderTabs(){
   const tabs = [["all", UI[lang].all, CATALOG.length], ...Object.entries(CATEGORIES).map(([k,v]) => [k, v[lang], CATALOG.filter(p => p.cat === k).length])];
@@ -704,16 +885,23 @@ function renderGrid(){
   $("#resultCount").textContent = all.length ? UI[lang].count(list.length, all.length) : "";
   $("#moreWrap").hidden = all.length <= shown;
   $("#moreBtn").textContent = UI[lang].more;
+  $("#suggest").innerHTML = all.length ? "" : `<span>${UI[lang].trySug}</span>` +
+    SUGGESTIONS[lang].map(s => `<button type="button" data-sug="${esc(s)}">${esc(s)}</button>`).join("") +
+    `<button type="button" data-sug-special>${UI[lang].special}</button>`;
+  $("#suggest").querySelectorAll("[data-sug]").forEach(b => b.addEventListener("click", () => { activeCat = "all"; $("#search").value = query = b.dataset.sug; renderTabs(); renderGrid(); }));
+  const sp = $("#suggest").querySelector("[data-sug-special]");
+  if (sp) sp.addEventListener("click", () => { $("#customText").value = query; openCart(true); });
   $("#grid").innerHTML = list.map(p => `<article class="card">
-      ${thumb(p)}
+      <button class="open" type="button" data-detail="${p.id}" aria-label="${esc(p[lang].name)}">${thumb(p)}</button>
       <div class="body">
         <span class="eyebrow">${CATEGORIES[p.cat][lang]}</span>
-        <h3>${esc(p[lang].name)}</h3>
+        <button class="open" type="button" data-detail="${p.id}"><h3>${esc(p[lang].name)}</h3></button>
         <p class="desc">${esc(p[lang].desc)}</p>
         <div class="price">${priceHTML(p)}</div>
         <div class="actions">${control(p)}</div>
       </div></article>`).join("");
   bindControls($("#grid"));
+  $("#grid").querySelectorAll("[data-detail]").forEach(b => b.addEventListener("click", () => openDetail(b.dataset.detail)));
 }
 $("#search").addEventListener("input", e => { query = e.target.value; shown = CONFIG.pageSize; renderGrid(); });
 $("#moreBtn").addEventListener("click", () => { shown += CONFIG.pageSize; renderGrid(); });
@@ -743,7 +931,13 @@ function renderCart(){
   $("#estimateWrap").hidden = n === 0;
   $("#estimateValue").textContent = money(priced.reduce((s,x) => s + x.p.price * x.qty, 0));
   $("#estimateNote").textContent = UI[lang].estNote(toQuote);
+  const sub = priced.reduce((s,x) => s + x.p.price * x.qty, 0);
+  $("#mbar").hidden = n === 0;
+  document.body.classList.toggle("has-mbar", n > 0);
+  $("#mbarCount").textContent = UI[lang].items(n);
+  $("#mbarTotal").textContent = priced.length ? money(sub) + (toQuote ? UI[lang].kitPlus(toQuote) : "") : UI[lang].quote;
 }
+$("#mbarBtn").addEventListener("click", () => openCart(false));
 $("#customAdd").addEventListener("click", () => {
   const text = $("#customText").value.trim();
   if (!text) { $("#customText").focus(); return; }
