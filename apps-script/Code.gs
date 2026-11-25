@@ -58,7 +58,10 @@ function crearFormulario() {
   ScriptApp.newTrigger('alRecibirFormulario').forForm(form).onFormSubmit().create();
   PropertiesService.getScriptProperties().setProperty('FORM_ID', form.getId());
   const url = form.getPublishedUrl().replace(/\/viewform.*$/, '/formResponse');
-  Logger.log('COMPARTA ESTO CON CLAUDE:  ' + url + '  |  entry.' + item.getId());
+  // El número de campo público (entry) no es el mismo que item.getId(): se obtiene de un enlace prellenado.
+  const pre = form.createResponse().withItemResponse(item.createResponse('x')).toPrefilledUrl();
+  const entry = (pre.match(/entry\.\d+/) || ['entry.?'])[0];
+  Logger.log('COMPARTA ESTO CON CLAUDE:  ' + url + '  |  ' + entry);
 }
 
 /** Se ejecuta solo cada vez que llega un pedido por el formulario. */
