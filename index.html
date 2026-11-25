@@ -200,6 +200,22 @@ form .row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
 .done svg{width:64px;height:64px;margin-bottom:var(--s4)}
 .done h3{font-size:22px;margin-bottom:var(--s3)}
 .done .ref{display:inline-block;margin:var(--s4) 0;padding:var(--s2) var(--s4);background:var(--tile);font-weight:700;letter-spacing:.04em}
+.hello{font-size:20px;font-weight:700;color:var(--muted);margin-bottom:var(--s2)}
+.history{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s4)}
+.hcard{background:var(--surface);border-top:2px solid var(--aqua);padding:var(--s4) var(--s6) var(--s6);display:flex;flex-direction:column;gap:var(--s2)}
+.hcard .meta{font-size:12px;color:var(--muted);letter-spacing:.04em}
+.hcard h3{font-size:16px;line-height:1.3}
+.hcard p{font-size:13px;flex:1}
+.hcard .total{font-size:14px}
+.hcard .total strong{font-size:17px}
+.hcard .btn{align-self:flex-start;margin-top:var(--s2)}
+.timeline{list-style:none;margin:var(--s6) auto 0;padding:0;max-width:380px;text-align:left}
+.timeline li{position:relative;padding:0 0 var(--s4) var(--s8);border-left:1px solid var(--line-soft);margin-left:9px}
+.timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+.timeline li::before{content:"";position:absolute;left:-9px;top:2px;width:16px;height:16px;border-radius:50%;border:1px solid var(--aqua);background:var(--surface)}
+.timeline li.on::before{background:var(--petrol);border-color:var(--petrol)}
+.timeline strong{display:block;font-size:14px}
+.timeline span{display:block;font-size:13px;color:var(--muted);line-height:1.4}
 .done .actions{display:flex;flex-wrap:wrap;gap:var(--s3);justify-content:center;margin-top:var(--s6)}
 .empty-cart{color:var(--muted);font-size:14px;padding:var(--s2) 0 var(--s4)}
 /* ---------- Kits ---------- */
@@ -353,6 +369,7 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
     <div class="accent" aria-hidden="true"></div>
     <div class="wrap">
       <div class="inner">
+        <p class="hello" id="hello" hidden></p>
         <span class="eyebrow" data-i18n="hero.eyebrow">Portal de compras para DHL Aero Expreso</span>
         <h1 data-i18n="hero.title">Lo que su equipo pide, en un solo lugar.</h1>
         <p class="lead" data-i18n="hero.lead">Precios acordados para DHL. Arme su pedido, envíelo y reciba la propuesta formal para Basware en menos de 12 horas hábiles.</p>
@@ -366,6 +383,18 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
           <div><strong data-i18n="f3.t">Pago a 31 días fin de mes</strong><span data-i18n="f3.d">Término Y310, como en sus órdenes actuales</span></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="block" id="recientes" hidden>
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow" data-i18n="hist.eyebrow">Guardados en este equipo</span>
+          <h2 data-i18n="hist.title">Sus pedidos recientes</h2>
+        </div>
+      </div>
+      <div class="history" id="history"></div>
     </div>
   </section>
 
@@ -532,6 +561,12 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
       <h3 data-i18n="done.title">Recibimos su pedido</h3>
       <p data-i18n="done.text">Le enviaremos la propuesta formal en menos de 12 horas hábiles. Su número de referencia es:</p>
       <div class="ref" id="doneRef"></div>
+      <ol class="timeline">
+        <li class="on"><strong data-i18n="tl1.t">Pedido recibido</strong><span data-i18n="tl1.d">Ahora. Le llegará una confirmación a su correo.</span></li>
+        <li><strong data-i18n="tl2.t">Propuesta formal</strong><span data-i18n="tl2.d">En menos de 12 horas hábiles, con el número para Basware.</span></li>
+        <li><strong data-i18n="tl3.t">Su PO en Basware</strong><span data-i18n="tl3.d">Emita la orden con la propuesta y el propósito de este pedido.</span></li>
+        <li><strong data-i18n="tl4.t">Entrega y factura</strong><span data-i18n="tl4.d">En la fecha acordada. Factura a 31 días fin de mes (Y310).</span></li>
+      </ol>
       <div class="actions">
         <button class="btn" type="button" id="printBtn" data-i18n="done.print">Imprimir o guardar PDF</button>
         <button class="btn secondary" type="button" id="newOrder" data-i18n="done.again">Nuevo pedido</button>
@@ -638,7 +673,12 @@ const EN = {
   "nav.kits":"Kits","kits.eyebrow":"Ready-made kits","kits.title":"Everything you need, in one step",
   "kits.note":"Add the kit and adjust quantities in your order. You can remove anything you do not need.",
   "detail.note":"Reference image. If you need another variant, mention it in the comments.","detail.related":"Your team also orders",
-  "mbar.cta":"View order"
+  "mbar.cta":"View order",
+  "hist.eyebrow":"Saved on this device","hist.title":"Your recent orders",
+  "tl1.t":"Order received","tl1.d":"Now. You will get a confirmation by email.",
+  "tl2.t":"Formal proposal","tl2.d":"In under 12 business hours, with the number for Basware.",
+  "tl3.t":"Your PO in Basware","tl3.d":"Raise the order with the proposal and the purpose of this order.",
+  "tl4.t":"Delivery and invoice","tl4.d":"On the agreed date. Invoiced net 31 days after month end (Y310)."
 };
 const UI = {
   es:{ all:"Todos", add:"Agregar", from:"", quote:"A cotizar", remove:"Quitar", qty:"Cantidad", search:"Buscar: audífonos, tinta, catering…", close:"Cerrar",
@@ -648,7 +688,8 @@ const UI = {
        printTitle:"Solicitud de pedido", printFor:"Para", printRef:"Referencia", printDate:"Fecha", item:"Descripción", unitP:"Precio ref.", total:"Total ref.",
        printNote:"Precios de referencia en US$ antes de ITBMS. La propuesta formal de Colonial confirma precios y disponibilidad.",
        addKit:"Agregar kit", kitAdded:"Agregamos el kit a su pedido", kitTotal:"Desde", kitPlus:(n)=>` + ${n} a cotizar`, items:(n)=> n===1?"1 ítem":`${n} ítems`,
-       trySug:"Pruebe con:" },
+       trySug:"Pruebe con:", hello:(n)=>`Hola, ${n}.`, repeat:"Repetir este pedido", andMore:(n)=>` y ${n} más`,
+       subtotalRef:"Subtotal ref.", onlyQuote:"A cotizar" },
   en:{ all:"All", add:"Add", from:"", quote:"Quote on request", remove:"Remove", qty:"Quantity", search:"Search: headsets, ink, catering…", close:"Close",
        more:"Show more", count:(n,t)=>`Showing ${n} of ${t}`, added:"Added to your order", repeated:"We added your last order", special:"Special request",
        estNote:(q)=> q ? `Before ITBMS tax. Excludes ${q} item(s) to be quoted.` : "Before ITBMS tax. Final price in the proposal.",
@@ -656,7 +697,8 @@ const UI = {
        printTitle:"Order request", printFor:"For", printRef:"Reference", printDate:"Date", item:"Description", unitP:"Ref. price", total:"Ref. total",
        printNote:"Reference prices in US$ before ITBMS tax. Colonial's formal proposal confirms prices and availability.",
        addKit:"Add kit", kitAdded:"We added the kit to your order", kitTotal:"From", kitPlus:(n)=>` + ${n} to quote`, items:(n)=> n===1?"1 item":`${n} items`,
-       trySug:"Try:" }
+       trySug:"Try:", hello:(n)=>`Hello, ${n}.`, repeat:"Repeat this order", andMore:(n)=>` and ${n} more`,
+       subtotalRef:"Ref. subtotal", onlyQuote:"To be quoted" }
 };
 const FIELD_LABELS = {nombre:"Nombre",area:"Área",correo:"Correo",telefono:"Teléfono",proposito:"Propósito",fecha_entrega:"Fecha deseada",lugar_entrega:"Lugar de entrega",centro_costo:"Centro de costo",po:"PO",comentarios:"Comentarios"};
 
@@ -731,7 +773,7 @@ $("#gateForm").addEventListener("submit", async e => {
   if (!ok) { $("#gateError").hidden = false; $("#code").select(); }
 });
 $("#logoutBtn").addEventListener("click", () => {
-  ["dhl.code","dhl.cart","dhl.custom","dhl.last","dhl.me"].forEach(store.del);
+  ["dhl.code","dhl.cart","dhl.custom","dhl.last","dhl.me","dhl.history"].forEach(store.del);
   location.reload();
 });
 
@@ -803,6 +845,56 @@ function applyLang(){
   $("#repeatBtn").hidden = !store.get("dhl.last", null);
   $("#detailClose").setAttribute("aria-label", UI[lang].close);
   renderTabs(); renderGrid(); renderPopular(); renderKits(); renderCart(); refreshDetail();
+  renderHello(); renderHistory();
+}
+
+/* ---------- Saludo y pedidos recientes (guardados solo en este equipo) ---------- */
+function renderHello(){
+  const name = String((store.get("dhl.me", {}) || {}).nombre || "").trim().split(/\s+/)[0];
+  $("#hello").hidden = !name;
+  $("#hello").textContent = name ? UI[lang].hello(name) : "";
+}
+function getHistory(){
+  let h = store.get("dhl.history", null);
+  if (!h) { const last = store.get("dhl.last", null); h = last ? [{ ref:"", date:"", proposito:"", ...last }] : []; }
+  return h.filter(o => (o.prod || []).some(([id]) => byId(id)) || (o.custom || []).length).slice(0, 4);
+}
+function renderHistory(){
+  const h = getHistory();
+  $("#recientes").hidden = !h.length;
+  const L = UI[lang], fmt = d => d ? new Date(d).toLocaleDateString(lang === "es" ? "es-PA" : "en-US", { day:"numeric", month:"short", year:"numeric" }) : "";
+  $("#history").innerHTML = h.map((o, i) => {
+    const prods = (o.prod || []).map(([id,q]) => ({ p:byId(id), q })).filter(x => x.p);
+    const names = prods.map(x => `${x.q} × ${x.p[lang].name}`).concat((o.custom || []).map(c => `${c.qty} × ${c.text}`));
+    const priced = prods.filter(x => x.p.price != null);
+    const sub = priced.reduce((s,x) => s + x.p.price * x.q, 0);
+    return `<article class="hcard">
+      <span class="meta">${esc([o.ref, fmt(o.date)].filter(Boolean).join(" · "))}</span>
+      <h3>${esc(o.proposito || names[0] || "")}</h3>
+      <p>${esc(names.slice(0, 2).join(", "))}${names.length > 2 ? esc(L.andMore(names.length - 2)) : ""}</p>
+      <div class="total">${priced.length ? `${L.subtotalRef} <strong>${money(sub)}</strong>` : L.onlyQuote}</div>
+      <button class="btn small secondary" type="button" data-repeat="${i}">${L.repeat}</button>
+    </article>`;
+  }).join("");
+  $("#history").querySelectorAll("[data-repeat]").forEach(b => b.addEventListener("click", () => repeatOrder(h[Number(b.dataset.repeat)])));
+}
+function repeatOrder(o){
+  if (!o) return;
+  (o.prod || []).forEach(([id,q]) => { if (byId(id)) cart[id] = q; });
+  (o.custom || []).forEach(c => custom.push({ text:c.text, qty:c.qty }));
+  save(); renderGrid(); renderPopular(); renderCart(); toast(UI[lang].repeated); openCart(false);
+}
+
+/* ---------- Búsquedas sin resultado: se registran en la hoja de Colonial ---------- */
+let searchTimer, loggedSearches = new Set();
+function logEmptySearch(q){
+  const text = q.trim().slice(0, 80);
+  if (text.length < 3 || loggedSearches.has(norm(text)) || loggedSearches.size >= 10 || !CONFIG.googleForm.action) return;
+  loggedSearches.add(norm(text));
+  const me = store.get("dhl.me", {}) || {};
+  fetch(CONFIG.googleForm.action, { method:"POST", mode:"no-cors",
+    body: new URLSearchParams({ [CONFIG.googleForm.entry]: JSON.stringify({ tipo:"busqueda", texto:text, idioma:lang, area:me.area || "", cliente:CONFIG.client }) })
+  }).catch(() => {});
 }
 document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => { lang = b.dataset.lang; store.set("dhl.lang", lang); applyLang(); }));
 
@@ -903,7 +995,11 @@ function renderGrid(){
   bindControls($("#grid"));
   $("#grid").querySelectorAll("[data-detail]").forEach(b => b.addEventListener("click", () => openDetail(b.dataset.detail)));
 }
-$("#search").addEventListener("input", e => { query = e.target.value; shown = CONFIG.pageSize; renderGrid(); });
+$("#search").addEventListener("input", e => {
+  query = e.target.value; shown = CONFIG.pageSize; renderGrid();
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => { if (query.trim() && !visible().length) logEmptySearch(query); }, 1800);
+});
 $("#moreBtn").addEventListener("click", () => { shown += CONFIG.pageSize; renderGrid(); });
 
 /* ---------- Pedido ---------- */
@@ -957,12 +1053,7 @@ $("#closeCart").addEventListener("click", closeCart);
 $("#scrim").addEventListener("click", closeCart);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#drawer").classList.contains("open")) closeCart(); });
 
-$("#repeatBtn").addEventListener("click", () => {
-  const last = store.get("dhl.last", null); if (!last) return;
-  (last.prod || []).forEach(([id,q]) => { if (byId(id)) cart[id] = q; });
-  (last.custom || []).forEach(c => custom.push(c));
-  save(); renderGrid(); renderPopular(); renderCart(); toast(UI[lang].repeated); openCart(false);
-});
+$("#repeatBtn").addEventListener("click", () => repeatOrder(getHistory()[0]));
 
 /* ---------- Datos del solicitante (recordados en este equipo) ---------- */
 const ME_FIELDS = ["nombre","area","correo","telefono","lugar_entrega","centro_costo"];
@@ -1039,11 +1130,14 @@ $("#quoteForm").addEventListener("submit", async e => {
   $("#submitBtn").disabled = false;
 
   const me = {}; ME_FIELDS.forEach(k => me[k] = data[k] || ""); store.set("dhl.me", me);
-  store.set("dhl.last", { prod: prod.map(({p,qty}) => [p.id, qty]), custom: custom.slice() });
+  const entry = { ref, date: new Date().toISOString(), proposito: data.proposito || "", subtotal,
+    prod: prod.map(({p,qty}) => [p.id, qty]), custom: custom.map(c => ({ text:c.text, qty:c.qty })) };
+  store.set("dhl.last", { prod: entry.prod, custom: entry.custom });
+  store.set("dhl.history", [entry, ...(store.get("dhl.history", []) || [])].slice(0, 4));
   buildPrint(ref, data, prod, custom.slice(), subtotal);
   cart = {}; custom = []; save();
   form.querySelectorAll('[name="proposito"],[name="fecha_entrega"],[name="po"],[name="comentarios"]').forEach(el => el.value = "");
-  renderGrid(); renderPopular(); renderCart();
+  renderGrid(); renderPopular(); renderCart(); renderHello(); renderHistory();
   $("#repeatBtn").hidden = false;
   $("#doneRef").textContent = ref;
   $("#cartView").hidden = true; $("#doneView").hidden = false;

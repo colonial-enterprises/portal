@@ -84,6 +84,16 @@ function procesarPedido_(raw) {
     // Trampa anti-spam: los humanos nunca llenan este campo.
     if (d._gotcha) return { ok: true, ref: d.referencia || '' };
 
+    // Búsquedas sin resultado en el portal: solo se registran (sin correo), máximo 300 por hora.
+    if (d.tipo === 'busqueda') {
+      const c = CacheService.getScriptCache(), n = Number(c.get('busquedas') || 0);
+      if (n >= 300) return { ok: false, error: 'rate_limited' };
+      c.put('busquedas', String(n + 1), 3600);
+      const t = v => String(v == null ? '' : v).slice(0, 100);
+      hojaBusquedas_().appendRow([new Date(), t(d.texto), t(d.area), t(d.idioma), t(d.cliente)]);
+      return { ok: true };
+    }
+
     const req = ['referencia', 'nombre', 'area', 'correo', 'telefono', 'proposito', 'fecha_entrega', 'lugar_entrega'];
     for (const k of req) if (!String(d[k] || '').trim()) return { ok: false, error: 'missing_' + k };
     const items = Array.isArray(d.items) ? d.items.slice(0, 200) : [];
@@ -203,6 +213,20 @@ function hoja_() {
     sh.setFrozenRows(1);
     sh.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold').setBackground('#E0F1F3');
     sh.setColumnWidth(14, 380);
+  }
+  return sh;
+}
+
+function hojaBusquedas_() {
+  const id = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
+  const ss = id ? SpreadsheetApp.openById(id) : SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName('Búsquedas sin resultado');
+  if (!sh) {
+    sh = ss.insertSheet('Búsquedas sin resultado');
+    sh.appendRow(['Fecha', 'Lo que buscó', 'Área', 'Idioma', 'Cliente']);
+    sh.setFrozenRows(1);
+    sh.getRange(1, 1, 1, 5).setFontWeight('bold').setBackground('#E0F1F3');
+    sh.setColumnWidth(2, 320);
   }
   return sh;
 }
