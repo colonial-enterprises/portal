@@ -86,8 +86,7 @@ nav.main a:hover{color:var(--muted)}
 /* ---------- Hero ---------- */
 .hero{position:relative;overflow:hidden;padding:var(--s16) 0}
 .hero .inner{position:relative;max-width:680px;z-index:1}
-.hero .mira{position:absolute;right:6%;top:50%;transform:translateY(-50%);width:min(30vw,340px);height:auto;color:var(--aqua);opacity:.55;pointer-events:none}
-@media (max-width:900px){ .hero .mira{display:none} }
+
 .hero h1{font-size:clamp(32px,4.6vw,52px);margin:var(--s4) 0 var(--s6)}
 .hero p.lead{font-size:18px;max-width:600px}
 .hero .actions{display:flex;flex-wrap:wrap;gap:var(--s3);margin-top:var(--s8)}
@@ -101,8 +100,6 @@ section.block{padding:var(--s16) 0;scroll-margin-top:72px;position:relative;bord
 .hero > .wrap,section.block > .wrap,.guarantee > .wrap{position:relative;z-index:1}
 
 .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s6);flex-wrap:wrap;margin-bottom:var(--s8)}
-.section-head > div:first-child{position:relative;padding-left:44px}
-.section-head > div:first-child::before{content:"";position:absolute;left:0;top:2px;width:24px;height:46px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 60'%3E%3Cpath d='M1 0v60' stroke='%2346999F' stroke-width='1.2'/%3E%3Cpath d='M30 4A26 26 0 0 0 4 30h10a16 16 0 0 1 16-16z' fill='%2346999F'/%3E%3Cpath d='M4 30a26 26 0 0 0 26 26V46a16 16 0 0 1-16-16z' fill='%23F18330'/%3E%3C/svg%3E") no-repeat left top/contain}
 .section-head h2{font-size:clamp(26px,3.4vw,36px);margin-top:var(--s2)}
 .note{font-size:13px;color:var(--muted);border-left:2px solid var(--aqua);padding-left:var(--s3);max-width:380px}
 
@@ -166,11 +163,7 @@ section.block{padding:var(--s16) 0;scroll-margin-top:72px;position:relative;bord
 
 /* ---------- Guarantee / footer ---------- */
 .guarantee{background:#222C49;color:#fff;padding:var(--s16) 0}
-.guarantee{display:grid;grid-template-columns:minmax(0,46%) minmax(0,1fr);padding:0!important}
-.guarantee .gphoto{margin:0;min-height:100%;position:relative}
-.guarantee .gphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:32% 50%}
-.guarantee .wrap{max-width:none;margin:0;padding:var(--s16) var(--s12)}
-.guarantee .grid2{display:grid;grid-template-columns:1fr;gap:var(--s6);align-items:start}
+.guarantee .grid2{display:grid;grid-template-columns:1fr 1.3fr;gap:var(--s12);align-items:start}
 .guarantee .logo{display:block;width:150px;height:auto;margin-bottom:var(--s8)}
 .guarantee .eyebrow{color:#8FC6CB}
 .guarantee h2{font-size:clamp(28px,4vw,44px);margin-top:var(--s3)}
@@ -306,10 +299,6 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
 @media (max-width:900px){
   .steps{grid-template-columns:1fr 1fr}
   .guarantee .grid2,.special{grid-template-columns:1fr;gap:var(--s6)}
-  .guarantee{grid-template-columns:1fr}
-  .guarantee .gphoto{min-height:0;height:74vw;max-height:460px}
-  .guarantee .gphoto img{object-position:30% 30%}
-  .guarantee .wrap{padding:var(--s12) var(--s6)}
   nav.main{display:none}
   .lang{margin-left:auto}
 }
@@ -386,12 +375,6 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
 
 <main id="inicio">
   <section class="hero">
-    <svg class="mira" viewBox="0 0 200 200" fill="none" stroke="currentColor" aria-hidden="true">
-      <circle cx="100" cy="100" r="78" stroke-width="1.4"/>
-      <circle cx="100" cy="100" r="46" stroke-width="1.2" stroke-dasharray="7 7"/>
-      <path d="M100 4v34M100 162v34M4 100h34M162 100h34" stroke-width="1.4"/>
-      <path d="M100 66v68M66 100h68" stroke-width="1.2" stroke-dasharray="6 6"/>
-    </svg>
     <div class="wrap">
       <div class="inner">
         <p class="hello" id="hello" hidden></p>
@@ -501,9 +484,9 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
   </section>
 
   <section class="guarantee" id="contacto">
-    <figure class="gphoto"><img src="assets/colonial-equipo.jpg" alt="Equipo de Colonial" width="1400" height="1051" loading="lazy"></figure>
     <div class="wrap grid2">
       <div>
+        <img class="logo" src="assets/logo-white.png" alt="Colonial" width="850" height="651">
         <span class="eyebrow" data-i18n="g.eyebrow">Nuestra garantía</span>
         <h2 data-i18n="g.title">Simple y flexible es posible.</h2>
       </div>
