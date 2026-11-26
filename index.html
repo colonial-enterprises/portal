@@ -810,6 +810,7 @@ function start(data){
   KITS = (data.kits || []).map(k => ({ ...k, items: k.items.filter(([id]) => byId(id)) })).filter(k => k.items.length);
   $("#kits").hidden = !KITS.length;
   CATALOG.forEach(p => p.haystack = norm(`${p.es.name} ${p.es.desc} ${p.en.name} ${p.en.desc} ${CATEGORIES[p.cat].es} ${CATEGORIES[p.cat].en}`));
+  CATALOG.forEach(p => p.words = [...new Set(p.haystack.split(/[^a-z0-9]+/).filter(Boolean))]);
   Object.keys(cart).forEach(id => { if (!byId(id)) delete cart[id]; });
   $("#gate").hidden = true; $("#app").hidden = false;
   document.title = "Colonial · Compras DHL";
@@ -996,15 +997,17 @@ $("#detail").addEventListener("click", e => { if (e.target === $("#detail")) $("
 $("#detail").addEventListener("close", () => { detailId = null; $("#detailImg").dataset.id = ""; });
 
 /* ---------- Catálogo ---------- */
+const STOP = new Set(["de","del","la","el","los","las","para","con","y","en","por","un","una","the","for","of","and","with","a","to"]);
 function matches(p, words){
   return words.every(w => {
-    if (p.haystack.includes(w)) return true;
+    if (w.length >= 3 && p.haystack.includes(w)) return true;          // lo escrito, tal cual
+    if (p.words.some(x => x === w)) return true;
     const g = SYN_INDEX.get(w) || [...SYN_INDEX.keys()].filter(k => w.length >= 3 && k.startsWith(w)).map(k => SYN_INDEX.get(k))[0];
-    return !!g && g.some(s => p.haystack.includes(s));
+    return !!g && g.some(t => p.words.some(x => x === t || (t.length >= 4 && x.startsWith(t))));   // sinónimos: palabras completas
   });
 }
 function visible(){
-  const words = norm(query.trim()).split(/\s+/).filter(w => w.length > 1);
+  const words = norm(query.trim()).split(/[^a-z0-9]+/).filter(w => w.length > 1 && !STOP.has(w));
   return CATALOG.filter(p => (activeCat === "all" || p.cat === activeCat) && (!words.length || matches(p, words)));
 }
 function renderTabs(){
