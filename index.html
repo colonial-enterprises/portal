@@ -74,7 +74,9 @@ header.top{position:sticky;top:0;z-index:20;background:var(--surface);border-bot
 .top .wrap{display:flex;align-items:center;gap:var(--s6);height:72px}
 .brand{display:flex;align-items:baseline;gap:var(--s3);text-decoration:none}
 .brand img{display:block;height:26px;width:auto;align-self:center}
+.brand .cobrand{display:flex;align-items:center;gap:var(--s2);padding-left:var(--s3);border-left:1px solid var(--line-soft);align-self:center}
 .brand .for{font-size:13px;color:var(--muted);white-space:nowrap}
+.brand img.dhl{height:18px;width:auto}
 nav.main{display:flex;gap:var(--s6);margin-left:auto}
 nav.main a{text-decoration:none;font-size:15px}
 nav.main a:hover{color:var(--muted)}
@@ -307,6 +309,8 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
   .top .wrap{gap:var(--s3);height:64px}
   .brand img{height:22px}
   .brand .for{display:none}
+  .brand .cobrand{padding-left:var(--s2)}
+  .brand img.dhl{height:14px}
   #openCart .label{display:none}
   #openCart{padding:var(--s2) var(--s3)}
   .hero{padding:var(--s12) 0}
@@ -318,6 +322,13 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
   .addline .btn{grid-column:1 / -1}
   .special{padding:var(--s6)}
   .gate-box{padding:var(--s8) var(--s6)}
+}
+@media (max-width:400px){
+  .top .wrap{gap:var(--s2)}
+  .brand{gap:var(--s2)}
+  .brand img{height:19px}
+  .brand img.dhl{height:12px}
+  .lang button{padding:var(--s1) var(--s2)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -354,7 +365,7 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
         <source srcset="assets/wordmark-white.png" media="(prefers-color-scheme: dark)">
         <img src="assets/wordmark-navy.png" alt="Colonial" width="850" height="169">
       </picture>
-      <span class="for" data-i18n="brand.for">para DHL Aero Expreso</span>
+      <span class="cobrand"><span class="for" data-i18n="brand.for">para</span><img class="dhl" src="assets/dhl-logo.svg" alt="DHL Aero Expreso" width="176" height="39"></span>
     </a>
     <nav class="main">
       <a href="#frecuentes" data-i18n="nav.popular">Lo más pedido</a>
@@ -651,7 +662,7 @@ const ICONS = {
    TEXTOS
    ===================================================================== */
 const EN = {
-  "brand.for":"for DHL Aero Expreso","nav.popular":"Most ordered","nav.catalog":"Catalog","nav.process":"How it works","cart.button":"My order",
+  "brand.for":"for","nav.popular":"Most ordered","nav.catalog":"Catalog","nav.process":"How it works","cart.button":"My order",
   "hero.eyebrow":"Procurement portal for DHL Aero Expreso","hero.title":"What your team orders, in one place.",
   "hero.lead":"Agreed prices for DHL. Build your order, send it, and receive the formal proposal for Basware in under 12 business hours.",
   "hero.cta":"View catalog","hero.repeat":"Repeat my last order",
