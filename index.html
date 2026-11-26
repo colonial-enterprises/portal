@@ -59,7 +59,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* ---------- Gate ---------- */
 .gate{min-height:100vh;display:grid;place-items:center;padding:var(--s6) var(--s4);position:relative;overflow:hidden}
-.gate .accent{position:absolute;left:0;bottom:0;width:min(40vw,420px);height:min(40vw,420px);background:var(--aqua);border-top-right-radius:100%}
+.gate .gate-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .gate-box{position:relative;background:var(--surface);width:min(440px,100%);padding:var(--s12) var(--s8);border-top:2px solid var(--aqua)}
 .gate-box img{display:block;width:120px;height:auto;margin-bottom:var(--s8)}
 .gate-box h1{font-size:26px;margin:var(--s2) 0 var(--s3)}
@@ -85,7 +85,6 @@ nav.main a:hover{color:var(--muted)}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;overflow:hidden;padding:var(--s16) 0}
-.hero .accent{position:absolute;right:0;top:0;width:min(30vw,380px);height:min(30vw,380px);background:var(--aqua);border-bottom-left-radius:100%;pointer-events:none}
 .hero .inner{position:relative;max-width:680px}
 .hero h1{font-size:clamp(32px,4.6vw,52px);margin:var(--s4) 0 var(--s6)}
 .hero p.lead{font-size:18px;max-width:600px}
@@ -95,15 +94,23 @@ nav.main a:hover{color:var(--muted)}
 .facts span{font-size:14px;color:var(--muted)}
 
 /* ---------- Sections ---------- */
-section.block{padding:var(--s16) 0;border-top:1px solid var(--line-soft);scroll-margin-top:72px}
+section.block{padding:var(--s16) 0;scroll-margin-top:72px;position:relative}
+.hero,.guarantee{position:relative}
+.hero > .wrap,section.block > .wrap,.guarantee > .wrap{position:relative;z-index:1}
+svg.thread{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+svg.thread path{fill:none;stroke:var(--aqua);stroke-width:1.5;stroke-linecap:round;opacity:.85}
+svg.thread .ring{fill:var(--bg);stroke:var(--aqua);stroke-width:1}
+.guarantee svg.thread .ring{fill:#222C49}
+svg.thread .dot{fill:var(--orange)}
+svg.thread.draw path{transition:stroke-dashoffset 1.4s ease}
 .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s6);flex-wrap:wrap;margin-bottom:var(--s8)}
 .section-head h2{font-size:clamp(26px,3.4vw,36px);margin-top:var(--s2)}
 .note{font-size:13px;color:var(--muted);border-left:2px solid var(--aqua);padding-left:var(--s3);max-width:380px}
 
 /* ---------- Popular ---------- */
 .popular{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s4)}
-.pop{background:var(--surface);display:grid;grid-template-columns:72px 1fr;gap:var(--s3);align-items:center;padding:var(--s3);border-top:2px solid var(--aqua)}
-.pop .thumb{width:72px;height:72px}
+.pop{background:var(--surface);display:grid;grid-template-columns:88px 1fr;gap:var(--s3);align-items:center;padding:var(--s3);border-top:2px solid var(--aqua)}
+.pop .thumb{width:88px;height:88px}
 .pop strong{display:block;font-size:14px;line-height:1.3}
 .pop .p{font-size:13px;color:var(--muted)}
 .pop .row{grid-column:1 / -1}
@@ -122,18 +129,25 @@ section.block{padding:var(--s16) 0;border-top:1px solid var(--line-soft);scroll-
 .card{background:var(--surface);display:flex;flex-direction:column;border-top:2px solid var(--aqua)}
 .card .body{padding:var(--s4) var(--s6) var(--s6);display:flex;flex-direction:column;gap:var(--s2);flex:1}
 .card h3{font-size:16px;line-height:1.3}
-.card p.desc{font-size:13px;flex:1}
+.card p.desc{font-size:13px;line-height:1.5;max-height:4.5em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card .body .price{margin-top:auto}
 .card .price{font-size:13px;padding-top:var(--s3);margin-top:var(--s2);border-top:1px solid var(--line-soft)}
 .card .price strong{font-size:20px}
 .card .price span{color:var(--muted)}
 .card .price .quote{font-size:16px;font-weight:700;color:var(--muted)}
 .thumb{background:#FFFFFF;aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden;position:relative}
-.thumb img{width:100%;height:100%;object-fit:contain;padding:var(--s3)}
+.thumb img{width:100%;height:100%;object-fit:contain;padding:8%}
+.thumb.photo img{object-fit:cover;padding:0}
+.thumb.ill{background:var(--petrol)}
+.thumb.ill-tecnologia,.thumb.ill-eventos{background:#222C49}
+.thumb.ill svg{width:46%;height:46%;stroke:#fff;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:1}
+.thumb.ill::after{content:"";position:absolute;right:0;bottom:0;width:32%;aspect-ratio:1;background:var(--aqua);border-top-left-radius:100%}
 .thumb.fallback{background:var(--tile)}
 .thumb.fallback svg{width:42%;height:42%;stroke:var(--aqua)}
 .thumb.fallback::after{content:"";position:absolute;right:0;bottom:0;width:28%;aspect-ratio:1;background:var(--aqua);opacity:.18;border-top-left-radius:100%}
 .pop .thumb{aspect-ratio:1}
-.pop .thumb img{padding:var(--s1)}
+.pop .thumb img{padding:6%}
+.pop .thumb.photo img{padding:0}
 .stepper{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:var(--radius-control);overflow:hidden;width:max-content}
 .stepper button{border:0;background:transparent;width:44px;height:44px;font-size:20px;font-weight:700;cursor:pointer;color:var(--text)}
 .stepper input{width:52px;height:44px;border:0;border-left:1px solid var(--line-soft);border-right:1px solid var(--line-soft);text-align:center;background:var(--field-bg);font-weight:700;-moz-appearance:textfield}
@@ -213,7 +227,7 @@ form .row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
 .timeline li{position:relative;padding:0 0 var(--s4) var(--s8);border-left:1px solid var(--line-soft);margin-left:9px}
 .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
 .timeline li::before{content:"";position:absolute;left:-9px;top:2px;width:16px;height:16px;border-radius:50%;border:1px solid var(--aqua);background:var(--surface)}
-.timeline li.on::before{background:var(--petrol);border-color:var(--petrol)}
+.timeline li.on::before{background:var(--orange);border-color:var(--orange)}
 .timeline strong{display:block;font-size:14px}
 .timeline span{display:block;font-size:13px;color:var(--muted);line-height:1.4}
 .done .actions{display:flex;flex-wrap:wrap;gap:var(--s3);justify-content:center;margin-top:var(--s6)}
@@ -226,7 +240,8 @@ form .row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
 .kit ul{list-style:none;margin:0;padding:0;flex:1}
 .kit li{display:grid;grid-template-columns:44px 1fr;gap:var(--s3);align-items:center;padding:var(--s2) 0;border-bottom:1px solid var(--line-soft);font-size:13px;line-height:1.3}
 .kit li .thumb{width:44px;height:44px;aspect-ratio:1}
-.kit li .thumb img{padding:2px}
+.kit li .thumb img{padding:3px}
+.kit li .thumb.photo img{padding:0}
 .kit li .thumb.fallback svg{width:60%;height:60%}
 .kit .total{font-size:14px;color:var(--muted)}
 .kit .total strong{font-size:18px;color:var(--text)}
@@ -298,8 +313,7 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
   .brand .for{display:none}
   #openCart .label{display:none}
   #openCart{padding:var(--s2) var(--s3)}
-  .hero{padding:calc(26vw + var(--s4)) 0 var(--s12)}
-  .hero .accent{width:26vw;height:26vw}
+  .hero{padding:var(--s12) 0}
   .facts{grid-template-columns:1fr;gap:var(--s3)}
   .popular{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
@@ -316,7 +330,10 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
 
 <!-- =================== Acceso =================== -->
 <div class="gate" id="gate">
-  <div class="accent" aria-hidden="true"></div>
+  <svg class="gate-lines" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M-20 820 C 180 820, 260 560, 470 520" fill="none" stroke="#46999F" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+    <path d="M1020 160 C 820 160, 760 420, 560 470" fill="none" stroke="#46999F" stroke-width="1.5" vector-effect="non-scaling-stroke" opacity=".6"/>
+  </svg>
   <form class="gate-box" id="gateForm" autocomplete="off">
     <picture>
       <source srcset="assets/logo-white.png" media="(prefers-color-scheme: dark)">
@@ -366,7 +383,6 @@ dialog.detail::backdrop{background:rgba(15,21,38,.55)}
 
 <main id="inicio">
   <section class="hero">
-    <div class="accent" aria-hidden="true"></div>
     <div class="wrap">
       <div class="inner">
         <p class="hello" id="hello" hidden></p>
@@ -781,8 +797,8 @@ $("#logoutBtn").addEventListener("click", () => {
    Portal
    ===================================================================== */
 function start(data){
-  CATALOG = data.rows.map(([id,cat,price,unit,esN,esD,enN,enD,img]) => ({
-    id, cat, price, img, unit:(UNITS[unit]||UNITS.u),
+  CATALOG = data.rows.map(([id,cat,price,unit,esN,esD,enN,enD,img,fit]) => ({
+    id, cat, price, img, photo: fit === "c", unit:(UNITS[unit]||UNITS.u),
     es:{ name:esN, desc:esD }, en:{ name:enN, desc:enD }
   }));
   const map = new Map(CATALOG.map(p => [p.id, p]));
@@ -796,13 +812,36 @@ function start(data){
   document.title = "Colonial · Compras DHL";
   prefillMe();
   applyLang();
+  startThreads();
 }
 
+/* Ilustraciones de línea para servicios (estilo del libro de marca: trazo fino, formas del círculo). */
+const ILLUS = {
+  ice:'<rect x="18" y="10" width="28" height="44" rx="2"/><path d="M18 30h28M40 16v6"/><rect x="24" y="37" width="6" height="6" rx="1"/><rect x="33" y="40" width="6" height="6" rx="1"/>',
+  filter:'<path d="M32 10C28 17 20 26 20 34a12 12 0 0 0 24 0c0-8-8-17-12-24z"/><path d="M26 35h12M27.5 41h9"/>',
+  inspect:'<rect x="18" y="12" width="28" height="42" rx="2"/><rect x="26" y="8" width="12" height="8" rx="2"/><path d="M25 32l5 5 10-11M25 46h14"/>',
+  fleet:'<path d="M6 44V26h30l9 8h11v10z"/><circle cx="17" cy="45" r="4"/><circle cx="46" cy="45" r="4"/><circle cx="49" cy="13" r="4"/><path d="M52 16l6 6"/>',
+  courier:'<path d="M14 44V26h28l8 8h8v10z"/><circle cx="24" cy="45" r="4"/><circle cx="49" cy="45" r="4"/><path d="M2 30h8M4 36h6M6 42h4"/>',
+  crane:'<path d="M8 54h30M20 54V18l34-8M20 18l-8 5M50 11v19"/><path d="M50 30a3 3 0 1 1-3 3"/><rect x="15" y="42" width="11" height="8" rx="1"/>',
+  panels:'<rect x="11" y="12" width="12" height="40"/><rect x="26" y="12" width="12" height="40"/><rect x="41" y="12" width="12" height="40"/><path d="M8 56h48"/>',
+  catering:'<path d="M14 44a18 18 0 0 1 36 0z"/><circle cx="32" cy="24" r="2.5"/><path d="M8 50h48"/>',
+  event:'<path d="M4 14q28 20 56 0"/><path d="M13 18l3 10 5-7M26 23l2 10 5-9M39 22l3 10 4-8"/><circle cx="48" cy="40" r="7"/><path d="M48 47q-3 5 0 10"/>',
+  whistle:'<circle cx="26" cy="38" r="11"/><path d="M33 29h20v8H36"/><path d="M15 33C8 26 10 15 20 13"/><circle cx="26" cy="38" r="3"/>',
+  coach:'<rect x="9" y="12" width="46" height="40" rx="2"/><path d="M32 12v40M18 22l6 6M24 22l-6 6M26 34q10-2 14 6"/><circle cx="43" cy="42" r="3.5"/>',
+  jersey:'<path d="M23 10l-13 8 4 10 7-3v29h22V25l7 3 4-10-13-8a9 6 0 0 1-18 0z"/><path d="M32 32v12"/>',
+  procure:'<path d="M14 24l18-8 18 8v22l-18 8-18-8z"/><path d="M14 24l18 8 18-8M32 32v22M23 20l18 8"/>',
+  design:'<path d="M32 10l12 24-12 18-12-18z"/><path d="M32 10v24"/><circle cx="32" cy="36" r="3"/><rect x="6" y="44" width="6" height="6"/><rect x="52" y="44" width="6" height="6"/><path d="M12 47h8M44 47h8"/>',
+  photo:'<rect x="10" y="14" width="44" height="36" rx="2"/><path d="M14 44l12-12 8 8 6-6 10 10"/><circle cx="42" cy="24" r="4"/>'
+};
 function thumb(p, small){
   const alt = esc(p[lang].name);
+  if (p.img && p.img.startsWith("ill:")) {
+    const k = p.img.slice(4);
+    return `<div class="thumb ill ill-${p.cat}" role="img" aria-label="${alt}"><svg viewBox="0 0 64 64" aria-hidden="true">${ILLUS[k] || ""}</svg></div>`;
+  }
   const fb = `<div class="thumb fallback" aria-hidden="true">${ICONS[p.cat]}</div>`;
   if (!p.img) return fb;
-  return `<div class="thumb"><img src="${esc(p.img)}" alt="${alt}" loading="lazy" decoding="async" referrerpolicy="no-referrer" ${small?'width="72" height="72"':''} onerror="this.parentNode.outerHTML=decodeURIComponent('${encodeURIComponent(fb)}')"></div>`;
+  return `<div class="thumb${p.photo ? " photo" : ""}"><img src="${esc(p.img)}" alt="${alt}" loading="lazy" decoding="async" referrerpolicy="no-referrer" ${small?'width="72" height="72"':''} onerror="this.parentNode.outerHTML=decodeURIComponent('${encodeURIComponent(fb)}')"></div>`;
 }
 function priceHTML(p){
   return p.price == null
@@ -1166,6 +1205,72 @@ function buildPrint(ref, data, prod, cust, subtotal){
 /* ---------- Toast ---------- */
 let toastT;
 function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 1800); }
+
+/* =====================================================================
+   Hilo conector: una línea curva continua que une las secciones del portal.
+   Entra por la derecha de cada sección, llega al título (punto naranja),
+   baja por el margen izquierdo y sale hacia la derecha para pasar a la siguiente.
+   ===================================================================== */
+const SVGNS = "http://www.w3.org/2000/svg";
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let threadObs = null, threadTimer = null;
+function threadSections(){
+  return [...document.querySelectorAll("#app main > section, #app main > .guarantee")].filter(s => !s.hidden && s.offsetHeight > 0);
+}
+function drawThreads(){
+  const secs = threadSections();
+  secs.forEach((sec, i) => {
+    const eb = sec.querySelector(".logo, .eyebrow"); if (!eb) return;
+    let svg = sec.querySelector(":scope > svg.thread");
+    if (!svg) { svg = document.createElementNS(SVGNS, "svg"); svg.setAttribute("class", "thread"); svg.setAttribute("aria-hidden", "true"); sec.prepend(svg); }
+    const sr = sec.getBoundingClientRect(), er = eb.getBoundingClientRect();
+    const wrap = sec.querySelector(".wrap"), wr = wrap.getBoundingClientRect();
+    const padL = parseFloat(getComputedStyle(wrap).paddingLeft);
+    const W = sr.width, H = sr.height;
+    const L = Math.max(9, er.left - sr.left - Math.min(22, padL * 0.6));
+    const R = Math.min(W - 9, wr.right - sr.left - padL + Math.min(22, padL * 0.6));
+    const last = i === secs.length - 1, first = i === 0;
+    const X = (i % 2 === 0 || last) ? L : R;                       // la última sección termina a la izquierda, junto al logo
+    const prevX = (i - 1) % 2 === 0 ? L : R;
+    const y = er.top - sr.top + er.height / 2;
+    const pad = Math.min(parseFloat(getComputedStyle(sec).paddingTop) || 48, y - 10);
+    const t = Math.min(30, y * 0.35);
+    let d;
+    if (first && W > 900) {
+      // Encabezado: arco amplio que entra por la derecha y llega al primer título.
+      d = `M ${W + 2} ${H * 0.68} C ${W * 0.74} ${H * 0.68}, ${W * 0.74} ${t}, ${W * 0.5} ${t} C ${L + 40} ${t}, ${L} ${t}, ${L} ${y}`;
+    } else if (first) {
+      d = `M ${W + 2} ${t} C ${W * 0.5} ${t}, ${L} ${t}, ${L} ${y}`;
+    } else {
+      // Cruce de un costado al otro dentro del margen superior (zona sin contenido).
+      d = `M ${prevX} 0 C ${prevX} ${pad * 0.6}, ${X} ${pad * 0.4}, ${X} ${pad} L ${X} ${y}`;
+    }
+    if (!last) d += ` L ${X} ${H}`;
+    const nx = X;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.innerHTML = `<path d="${d}"/><circle class="ring" cx="${nx}" cy="${y}" r="8"/><circle class="dot" cx="${nx}" cy="${y}" r="4.5"/>`;
+    const path = svg.querySelector("path"), len = path.getTotalLength();
+    if (!reduceMotion && !svg.dataset.shown) { path.style.strokeDasharray = len; path.style.strokeDashoffset = len; }
+    else { path.style.strokeDasharray = "none"; path.style.strokeDashoffset = 0; }
+    if (!reduceMotion && threadObs) threadObs.observe(svg);
+  });
+}
+function startThreads(){
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    threadObs = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const svg = e.target, path = svg.querySelector("path");
+      svg.classList.add("draw"); svg.dataset.shown = "1";
+      requestAnimationFrame(() => { path.style.strokeDashoffset = 0; });
+      threadObs.unobserve(svg);
+    }), { threshold: 0.12 });
+  }
+  drawThreads();
+  const again = () => { clearTimeout(threadTimer); threadTimer = setTimeout(drawThreads, 120); };
+  addEventListener("resize", again);
+  if ("ResizeObserver" in window) new ResizeObserver(again).observe($("#app main"));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(again);
+}
 
 /* ---------- Inicio ---------- */
 $("#year").textContent = new Date().getFullYear();
